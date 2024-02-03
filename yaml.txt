@@ -1,0 +1,489 @@
+openapi: '3.0.3'
+info:
+  description: APIs for managing recepies
+  title:  RECIPIE API
+  version: '3.0.0'
+  
+servers: [
+  {
+'url': 'https://localhost:8080/api/v1/recipies',
+      'description': 'Base path of the API',
+
+}]
+
+tags:
+  - name: RecipieAPI
+    description: APIs for managing recepies
+security:
+  - BearerAuth: []
+    
+paths: {
+  '/getAllRecipes': {
+      get: {
+        'operationId': 'listAllrecipes',
+        'description': 'API to return all avilable recipies',
+        'parameters': [
+          {
+            'name': 'Trace-Id',
+            'in': 'header',
+            'required': true,
+            'description': 'Trace id used to trace the request from beginning to the end, example - 12345678',
+            'schema': {
+              'type': 'string'
+            }
+          }
+        ],
+        'responses': {
+          '200': {
+            'description': 'List of recipies',
+            'content': {
+              'application/json': {
+                'schema': {
+                  '$ref': '#/components/schemas/RecipieResponseDTO'
+                }
+              }
+            }
+          },
+        '401': {
+                  '$ref': '#/components/responses/AuthenticationException'
+                },
+        '403': {
+                  '$ref': '#/components/responses/AuthorizationException'
+                },
+        '404': {
+                  '$ref': '#/components/responses/NotFoundException'
+                },
+        '500': {
+                  '$ref': '#/components/responses/ServerException'
+                }   
+        }}
+    
+  },
+  '/getRecipies':{
+    
+        'post': {
+        'operationId': 'getRecipies',
+        'description': 'API to return recipies based on search criteria',
+        'parameters': [
+          {
+            'name': 'Trace-Id',
+            'in': 'header',
+            'required': true,
+            'description': 'Trace id used to trace the request from beginning to the end, example - 12345678',
+            'schema': {
+              'type': 'string'
+            }
+          }
+        ],
+       'requestBody':
+       {
+          'required':true,
+          'description': 'params required to search recipie/recipies',
+            'content': {
+              'application/json': {
+                'schema': {
+                  '$ref': '#/components/schemas/RecipieSearchDTO'
+                }
+              }
+            }
+       },
+        'responses': {
+          '200': {
+            'description': 'SuccessFul retrival of a recipe/recipies ',
+            'content': {
+              'application/json': {
+                'schema': {
+                  '$ref': '#/components/schemas/SearchResponseDTO'
+                }
+              }
+            }
+          },
+          '400': {
+                  '$ref': '#/components/responses/BadRequestException'
+                },
+        '401': {
+                  '$ref': '#/components/responses/AuthenticationException'
+                },
+        '403': {
+                  '$ref': '#/components/responses/AuthorizationException'
+                },
+        '404': {
+                  '$ref': '#/components/responses/NotFoundException'
+                },
+                
+        '415': {
+                  '$ref': '#/components/responses/UnsupportedTypeException'
+                },
+        '500': {
+                  '$ref': '#/components/responses/ServerException'
+                }          
+              
+        }
+          
+        }
+     
+   
+    
+  },
+  
+'/updateRecipie': {
+        'put': {
+        'operationId': 'updateRecipie',
+        'description': 'API to update an existing recipie',
+        'parameters': [
+          {
+            'name': 'Trace-Id',
+            'in': 'header',
+            'required': true,
+            'description': 'Trace id used to trace the request from beginning to the end, example - 12345678',
+            'schema': {
+              'type': 'string'
+            }
+          }
+        ],
+       'requestBody':
+       {
+         'required':true,
+          'description': 'params required to update a recipie',
+            'content': {
+              'application/json': {
+                'schema': {
+                  '$ref': '#/components/schemas/RecipieUpdateDTO'
+                }
+              }
+            }
+       },
+        'responses': {
+          '200': {
+            'description': 'SuccessFull updated the details of the recipe ',
+            'content': {
+              'application/json': {
+                'schema': {
+                  '$ref': '#/components/schemas/ResponseDTO'
+                }
+              }
+            }
+          },
+          '400': {
+          
+                  '$ref': '#/components/responses/BadRequestException',
+            
+                },
+        '401': {
+                  '$ref': '#/components/responses/AuthenticationException'
+                },
+        '403': {
+                  '$ref': '#/components/responses/AuthorizationException'
+                },
+        '404': {
+                  '$ref': '#/components/responses/NotFoundException'
+                },
+                
+        '415': {
+                  '$ref': '#/components/responses/UnsupportedTypeException'
+                },
+        '500': {
+                  '$ref': '#/components/responses/ServerException'
+                }          
+              
+        }}},
+        
+'/removeRecipie/{id}': {
+        'delete': {
+        'operationId': 'deleteRecipie',
+        'parameters': [
+          {
+            'name': 'Trace-Id',
+            'in': 'header',
+            'required': true,
+            'description': 'Trace id used to trace the request from beginning to the end, example - 12345678',
+            'schema': {
+              'type': 'string'
+            }
+          },
+          {
+            'in': 'path',
+            'name': 'id',
+            'required': true,
+            'description': 'receipie ID to be deleted',
+            'schema': {
+              'type': 'integer'
+            }
+            
+          }
+        ],
+        'responses': {
+          '200': {
+            'description': 'SuccessFul deletion of the recipe ',
+            'content': {
+              'application/json': {
+                'schema': {
+                  '$ref': '#/components/schemas/DeleteResponseDTO'
+                }
+              }
+            }
+          },
+      
+        '401': {
+                  '$ref': '#/components/responses/AuthenticationException'
+                },
+        '403': {
+                  '$ref': '#/components/responses/AuthorizationException'
+                },
+        '404': {
+                  '$ref': '#/components/responses/NotFoundException'
+                },
+                
+        '415': {
+                  '$ref': '#/components/responses/UnsupportedTypeException'
+                },
+        '500': {
+                  '$ref': '#/components/responses/ServerException'
+                }          
+              
+        }}
+ }
+    
+  }
+        
+        
+        
+components:
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: jwt
+      
+  responses:
+    BadRequestException:
+       description: user input is invalid
+       content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error: Invalid input field  recipieName is required
+    AuthenticationException:
+      description: when an invalid credentials is supplied
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error: Invalid credentials supplied
+    AuthorizationException:
+      description: the user when doesnt have privillage
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error: Access denied due to insufficient privilage
+    NotFoundException:
+      description: requested API end point is invalid or not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error: No such resource/item available 
+    UnsupportedTypeException:
+      description: requested body isnt the allowed format
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error: request isnt of the type supported        
+    ServerException:
+      description: when there is an internal issues
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+          example:
+            error: Technical issues when operation is performed
+    
+  schemas: 
+    RecipieResponseDTO:
+      type: object
+      properties:
+       recipieName:
+          description: 'name of the recipie'
+          type: string
+          example: 'Dosa'
+       suitableFor:
+          description: 'describes for how many person'
+          type: number
+          example: '4'
+       isVeg:
+          description: 'whether a recipe is veg'
+          type: boolean
+          example: true
+       instructions:
+          description: 'how the recipie is made'
+          example: 'rice flour batter and cooked on medium hot pan'
+       ingredients:
+        description: 'List of ingredients'
+        type: array
+        items:
+          type: string
+          
+    ResponseDTO:
+       type: object
+       properties:
+        recipieID:
+          description: 'ID of the recipie'
+          type: number
+          example: 5672
+        statusMessage:
+          description: 'message when recipie info is inserted in DB'
+          type: number
+          example: 'recipie created successfully'
+    DeleteResponseDTO:
+       type: object
+       properties:
+        statusMessage:
+          description: 'message when recipie info when removed'
+          type: number
+          example: 'recipie removed successfully'
+          
+    RecipieCreateDTO:
+       type: object
+       properties:
+        recipieName:
+          description: 'name of the recipie'
+          type: number
+          example: 'Dosa'
+        suitableFor:
+          description: 'describes for how many person'
+          type: number
+          example: '4'
+        isVeg:
+          description: 'whether a recipe is veg'
+          type: boolean
+          example: true
+        ingredients:
+          description: 'list of ingredients'
+          type: array
+          items:
+            type: string
+        instructions:
+          type: string
+          example: 'rice flour batter and cooked on medium hot pan'
+    RecipieSearchDTO:
+       type: object
+       properties:
+        suitableFor:
+          description: 'describes for how many person'
+          type: number
+          example: '4'
+        isVeg:
+          description: 'whether a recipe is veg'
+          type: boolean
+          example: true
+        ingredients:
+          description: 'list of ingredients'
+          type: array
+          items:
+            type: string
+        instructions:
+          type: string
+          example: 'rice flour batter and cooked on medium hot pan'
+    SearchResponseDTO:
+       type: object
+       properties:
+        recipieID:
+          description: 'ID of the recipie'
+          type: number
+          example: 5672
+        recipieName:
+          description: 'name of the recipie'
+          type: number
+          example: 'Dosa'
+        suitableFor:
+          description: 'describes for how many person'
+          type: number
+          example: '4'
+        isVeg:
+          description: 'whether a recipe is veg'
+          type: boolean
+          example: true
+        ingredients:
+          description: 'list of ingredients'
+          type: array
+          items:
+            type: string
+        instructions:
+          type: string
+          example: 'rice flour batter and cooked on medium hot pan'
+            
+    RecipieUpdateDTO:
+       type: object
+       properties:
+        recipieID:
+          description: 'id of the  recipie'
+          type: number
+          example: 'Dosa'
+        recipieName:
+          description: 'name of the  recipie'
+          type: number
+          example: 'Dosa'
+        suitableFor:
+          description: 'describes for how many person'
+          type: number
+          example: '4'
+        isVeg:
+          description: 'whether a recipe is veg'
+          type: boolean
+          example: true
+        ingredients:
+          description: 'list of ingredients'
+          type: array
+          items:
+            type: string
+    
+    
+    
+   
+  
+    ErrorMessage:
+      type: object
+      properties:
+       status:
+          description: 'status of the error code'
+          type: integer
+       message:
+          description: 'error message'
+          type: string
+       timestamp:
+          description: 'timestamp value during when exception occured'
+          type: string
+       path:
+         description: 'resource path which resulted to exception'
+         type: string
+          
+      example: 
+        BadRequest:
+          status: 400
+          message: 'Invalid input field  recipieName is required'
+          timestamp: '2020-11-29T09:42:12.287+00:00'
+          path: "/addRecipie"
+        Unauthorized:
+          status: 401
+          message: 'Invalid credentials supplied'
+          timestamp: '2020-11-29T09:42:12.287+00:00'
+          path: "/addRecipie"
+    
+        ServerError:
+          status: 500
+          message: 'Technical issues when operation is performed'
+          timestamp: '2020-11-29T09:42:12.287+00:00'
+          path: "/addRecipie"
+        NotFound:
+          status: 404
+          message: 'Requested resource or item not found'
+          timestamp: '2020-11-29T09:42:12.287+00:00'
+          path: "/addRecipie"
